@@ -16,12 +16,16 @@ common_ports = {
 }
 
 def scan_port(target, port):
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    result = s.connect_ex((target, port))
-    if result == 0:
-        service = common_ports.get(port, "Unknown")
-        print(f"Port {port} is open - {service}")
-    s.close()
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.settimeout(1)
+        result = s.connect_ex((target, port))
+        if result == 0:
+            service = common_ports.get(port, "Unknown")
+            print(f"Port {port} is open - {service}")
+        s.close()
+    except socket.error:
+        pass
 
 def worker(target, q):
     while not q.empty():
