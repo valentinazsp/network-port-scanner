@@ -1,9 +1,6 @@
 import socket
-import threading 
-
-target = "127.0.0.1"
-start_port = 1
-end_port = 9000
+import threading
+import argparse
 
 common_ports = {
     21: "FTP",
@@ -25,10 +22,16 @@ def scan_port(target, port):
         print(f"Port {port} is open - {service}")
     s.close()
 
+parser = argparse.ArgumentParser()
+parser.add_argument("target", help="Target IP address or hostname")
+parser.add_argument("--start", type=int, default=1, help="Start port (default: 1)")
+parser.add_argument("--end", type=int, default=9000, help="End port (default: 9000)")
+args = parser.parse_args()
+
 threads = []
 
-for port in range(start_port, end_port + 1):
-    t = threading.Thread(target=scan_port, args=(target, port))
+for port in range(args.start, args.end + 1):
+    t = threading.Thread(target=scan_port, args=(args.target, port))
     t.start()
     threads.append(t)
 
