@@ -13,6 +13,7 @@ I'm a CS major at UVA doing the Cybersecurity Focal Path, and wanted something h
 - Matches open ports against a list of common ones (22 = SSH, 80 = HTTP, etc.) so you get a rough idea of what's actually running
 - Times out on unresponsive ports instead of hanging
 - Everything's configurable from the command line — target, port range, thread count
+- Banner grabbing (reading the little "hello" message some services send when you connect)
 
 ## How to run it
 
@@ -42,7 +43,6 @@ Any open port gets checked against a small dictionary of common services, so you
 
 ## What I might add later
 
-- Banner grabbing (reading the little "hello" message some services send when you connect)
 - Saving results to a file
 - UDP support (right now it's TCP only)
 
