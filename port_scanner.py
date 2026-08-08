@@ -15,6 +15,13 @@ common_ports = {
     9000: "HTTP (alt)"
 }
 
+def grab_banner(s):
+    try:
+        banner = s.recv(1024).decode(errors='ignore').strip()
+        return banner if banner else None
+    except socket.error:
+        return None
+
 def scan_port(target, port):
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -22,7 +29,11 @@ def scan_port(target, port):
         result = s.connect_ex((target, port))
         if result == 0:
             service = common_ports.get(port, "Unknown")
-            print(f"Port {port} is open - {service}")
+            banner = grab_banner(s)
+            if banner:
+                print(f"Port {port} is open - {service} - Banner: {banner}")
+            else:
+                print(f"Port {port} is open - {service}")
         s.close()
     except socket.error:
         pass
